@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Earthrise — Rhetorical Power & Impact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #080c14;
+            --deep: #0d1526;
+            --panel: #131e33;
+            --border: #1e2f4d;
+            --earth-blue: #1d6fa4;
+            --sky: #3ba4d4;
+            --ice: #a8d8f0;
+            --gold: #e8b84b;
+            --green: #2db87a;
+            --red: #e05252;
+            --text: #d4e4f0;
+            --muted: #7a9ab5;
+            --white: #f0f6fc;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--void);
+            color: var(--text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* ── STARFIELD ── */
+        .stars {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .star {
+            position: absolute;
+            border-radius: 50%;
+            background: white;
+            animation: twinkle var(--d, 3s) ease-in-out infinite alternate;
+        }
+        @keyframes twinkle {
+            from { opacity: var(--min, 0.1); }
+            to   { opacity: var(--max, 0.8); }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            padding: 5rem 2rem 4rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            background: radial-gradient(ellipse at 50% 0%, rgba(29,111,164,0.25) 0%, transparent 70%);
+        }
+
+        .hero-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 1.2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 6vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 0.6rem;
+        }
+        .hero h1 em {
+            font-style: italic;
+            color: var(--sky);
+        }
+
+        .hero-sub {
+            color: var(--muted);
+            font-size: 1rem;
+            max-width: 520px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .badge-row {
+            display: flex;
+            gap: 0.7rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            border: 1px solid;
+        }
+        .badge-blue  { border-color: var(--sky);  color: var(--sky); }
+        .badge-gold  { border-color: var(--gold); color: var(--gold); }
+        .badge-green { border-color: var(--green); color: var(--green); }
+
+        /* ── NAV ── */
+        .nav-tabs {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8,12,20,0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            padding: 0 1.5rem;
+        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+        .nav-tab {
+            white-space: nowrap;
+            padding: 1rem 1.4rem;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: 0.2s;
+        }
+        .nav-tab.active, .nav-tab:hover {
+            color: var(--white);
+            border-color: var(--sky);
+        }
+
+        /* ── SECTIONS ── */
+        .section {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
+            position: relative;
+            z-index: 1;
+            animation: fadeUp 0.4s ease;
+        }
+        .section.active { display: block; }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ── SECTION HEADINGS ── */
+        .section-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.16em;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+        .section-desc {
+            color: var(--muted);
+            margin-bottom: 2.5rem;
+            font-size: 0.95rem;
+            max-width: 620px;
+        }
+        hr.divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 2.5rem 0;
+        }
+
+        /* ── VIDEO ── */
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 2.5rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .video-wrapper iframe {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        }
+
+        /* ── POEM ── */
+        .poem-wrap {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--earth-blue);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            line-height: 2.1;
+            color: var(--ice);
+            max-height: 420px;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+        .poem-wrap strong { font-style: normal; color: var(--gold); font-weight: 400; }
+
+        /* ── CONTEXT CARDS ── */
+        .context-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+        .ctx-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+        .ctx-icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+        .ctx-card h4 { font-size: 0.85rem; font-weight: 600; color: var(--sky); margin-bottom: 0.4rem; text-transform: uppercase; letter-spacing: 0.07em; }
+        .ctx-card p  { font-size: 0.92rem; color: var(--muted); }
+
+        /* ── TAP & DECODE ── */
+        .quote-block {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.8rem;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        .quote-block.open { border-color: var(--sky); }
+        .quote-trigger {
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .quote-trigger:active { background: rgba(255,255,255,0.03); }
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--ice);
+            line-height: 1.6;
+            flex: 1;
+        }
+        .toggle-icon {
+            color: var(--sky);
+            font-size: 1.3rem;
+            transition: transform 0.3s;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        .quote-block.open .toggle-icon { transform: rotate(45deg); }
+        .quote-panel {
+            display: none;
+            padding: 0 1.5rem 1.5rem;
+            border-top: 1px solid var(--border);
+            animation: fadeUp 0.25s ease;
+        }
+        .q-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--sky);
+            margin: 1rem 0 0.6rem;
+        }
+        .q-question {
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+        .choice-btn {
+            display: block;
+            width: 100%;
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            border: 1px solid var(--border);
+            padding: 0.9rem 1.1rem;
+            border-radius: 8px;
+            margin-bottom: 0.6rem;
+            text-align: left;
+            font-size: 0.92rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+            line-height: 1.4;
+        }
+        .choice-btn:hover:not(:disabled) { border-color: var(--sky); background: rgba(59,164,212,0.08); }
+        .choice-btn.correct { background: rgba(45,184,122,0.15); border-color: var(--green); color: var(--white); }
+        .choice-btn.wrong   { background: rgba(224,82,82,0.12);  border-color: var(--red);   opacity: 0.8; }
+        .choice-btn:disabled { cursor: default; }
+        .feedback-box {
+            display: none;
+            margin-top: 1rem;
+            padding: 1rem 1.2rem;
+            background: rgba(59,164,212,0.1);
+            border: 1px solid rgba(59,164,212,0.3);
+            border-radius: 8px;
+            font-size: 0.92rem;
+            color: var(--ice);
+            line-height: 1.6;
+        }
+        .feedback-box strong { color: var(--sky); }
+
+        /* ── RHETORICAL TOOLS ── */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        .tool-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.4rem;
+        }
+        .tool-tag {
+            display: inline-block;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            padding: 3px 10px;
+            border-radius: 20px;
+            margin-bottom: 0.8rem;
+            font-style: normal;
+        }
+        .tag-blue   { background: rgba(59,164,212,0.15); color: var(--sky); }
+        .tag-gold   { background: rgba(232,184,75,0.15);  color: var(--gold); }
+        .tag-green  { background: rgba(45,184,122,0.15);  color: var(--green); }
+        .tag-purple { background: rgba(180,100,255,0.15); color: #c084fc; }
+        .tool-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--ice);
+            line-height: 1.7;
+            margin-bottom: 0.7rem;
+        }
+        .tool-explanation {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .tool-explanation strong { color: var(--text); }
+
+        /* ── IMPACT SPECTRUM ── */
+        .spectrum-item {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .spectrum-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .spectrum-header h4 { font-size: 0.95rem; color: var(--white); }
+        .spectrum-meter {
+            display: flex;
+            gap: 4px;
+            align-items: center;
+        }
+        .meter-dot {
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: 0.3s;
+        }
+        .meter-dot.lit { background: var(--sky); }
+        .spectrum-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--ice);
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+            border-left: 3px solid var(--earth-blue);
+            padding-left: 1rem;
+        }
+        .spectrum-analysis {
+            font-size: 0.88rem;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+        .spectrum-analysis strong { color: var(--sky); }
+
+        /* ── MATCHER ── */
+        .match-item {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.3rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .match-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.98rem;
+            color: var(--ice);
+            margin-bottom: 0.8rem;
+            line-height: 1.7;
+        }
+        .match-item select {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.92rem;
+        }
+        .match-item select:focus { outline: none; border-color: var(--sky); }
+
+        /* ── THINKING ── */
+        .think-card {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .think-card h4 {
+            font-size: 1rem;
+            color: var(--white);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .think-card .think-context {
+            font-size: 0.88rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .think-card .hint {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--gold);
+            margin-bottom: 0.8rem;
+        }
+        textarea {
+            width: 100%;
+            height: 110px;
+            padding: 0.9rem 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.04);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.92rem;
+            resize: none;
+            transition: border-color 0.2s;
+        }
+        textarea:focus { outline: none; border-color: var(--sky); }
+
+        /* ── SYNTHESIS BUILDER ── */
+        .synth-prompt {
+            background: linear-gradient(135deg, rgba(29,111,164,0.2), rgba(29,111,164,0.05));
+            border: 1px solid rgba(59,164,212,0.35);
+            border-radius: 14px;
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+        .synth-prompt h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--white);
+            margin-bottom: 0.7rem;
+            line-height: 1.4;
+        }
+        .synth-prompt p {
+            font-size: 0.92rem;
+            color: var(--muted);
+            margin-bottom: 1.2rem;
+            line-height: 1.6;
+        }
+        .scaffold-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .chip {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: 'DM Mono', monospace;
+        }
+        .chip:hover { border-color: var(--sky); color: var(--sky); background: rgba(59,164,212,0.1); }
+        .chip.selected { border-color: var(--sky); color: var(--sky); background: rgba(59,164,212,0.15); }
+        .synth-area {
+            width: 100%;
+            height: 160px;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: rgba(0,0,0,0.3);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 0.95rem;
+            resize: none;
+        }
+        .synth-area:focus { outline: none; border-color: var(--sky); }
+        .char-counter {
+            text-align: right;
+            font-size: 0.78rem;
+            color: var(--muted);
+            margin-top: 4px;
+            font-family: 'DM Mono', monospace;
+        }
+
+        /* ── BUTTONS ── */
+        .btn-primary {
+            background: var(--earth-blue);
+            color: white;
+            border: none;
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+            display: inline-block;
+        }
+        .btn-primary:hover   { background: var(--sky); }
+        .btn-primary:active  { transform: scale(0.98); }
+        .btn-full { display: block; width: 100%; text-align: center; }
+
+        .score-banner {
+            display: none;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1rem;
+        }
+        .score-good { background: rgba(45,184,122,0.15); border: 1px solid var(--green); color: var(--green); }
+        .score-mid  { background: rgba(232,184,75,0.15);  border: 1px solid var(--gold);  color: var(--gold); }
+        .score-low  { background: rgba(224,82,82,0.12);   border: 1px solid var(--red);   color: var(--red); }
+
+        /* ── PROGRESS ── */
+        .progress-bar {
+            position: fixed;
+            top: 0; left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--earth-blue), var(--sky));
+            transition: width 0.5s ease;
+            z-index: 200;
+        }
+
+        /* ── MATCHING EXERCISE ── */
+        .round-header {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+        .round-header p { color: var(--muted); font-size: 0.92rem; margin: 0; flex: 1; }
+        .round-badge {
+            flex-shrink: 0;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(59,164,212,0.15);
+            color: var(--sky);
+            border: 1px solid rgba(59,164,212,0.4);
+            white-space: nowrap;
+        }
+        .match-arena {
+            display: grid;
+            grid-template-columns: 1fr 180px;
+            gap: 1.2rem;
+            align-items: start;
+        }
+        @media(max-width:640px){ .match-arena { grid-template-columns: 1fr; } }
+        .quotes-col { display: flex; flex-direction: column; gap: 0.8rem; }
+        .quote-slot {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            transition: border-color 0.2s;
+        }
+        .quote-slot.correct-slot { border-color: var(--green); }
+        .quote-slot.wrong-slot   { border-color: var(--red); }
+        .slot-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--ice);
+            margin: 0 0 0.6rem;
+            line-height: 1.6;
+        }
+        .drop-zone {
+            min-height: 38px;
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 8px;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .drop-zone.dragover { background: rgba(59,164,212,0.12); border-color: var(--sky); }
+        .drop-hint { font-size: 0.75rem; color: var(--muted); font-family: 'DM Mono', monospace; }
+        .placed-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(59,164,212,0.18);
+            border: 1px solid var(--sky);
+            color: var(--sky);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .placed-chip .remove-x { font-size: 0.9rem; opacity: 0.7; }
+        .devices-bank {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            position: sticky;
+            top: 70px;
+        }
+        @media(max-width:640px){ .devices-bank { position: static; flex-direction: row; flex-wrap: wrap; } }
+        .device-chip {
+            background: rgba(255,255,255,0.06);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: grab;
+            text-align: center;
+            transition: 0.2s;
+            user-select: none;
+        }
+        .device-chip:hover { border-color: var(--sky); color: var(--sky); background: rgba(59,164,212,0.1); }
+        .device-chip.used { opacity: 0.3; pointer-events: none; }
+        .device-chip.selected-tap { border-color: var(--gold); color: var(--gold); background: rgba(232,184,75,0.12); }
+        .r2-item {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+        }
+        .r2-quote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--ice);
+            margin: 0 0 0.7rem;
+            line-height: 1.6;
+        }
+        .r2-select {
+            width: 100%;
+            padding: 0.65rem 0.9rem;
+            border-radius: 7px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.05);
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.88rem;
+        }
+        .r2-select:focus { outline: none; border-color: var(--sky); }
+        .r2-item.r2-correct { border-color: var(--green); }
+        .r2-item.r2-wrong   { border-color: var(--red); }
+
+        .synth-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+            gap: 1rem;
+        }
+        .copy-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.07);
+            border: 1px solid var(--border);
+            color: var(--text);
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+        .copy-btn:hover { border-color: var(--sky); color: var(--sky); }
+        .copy-btn.copied { border-color: var(--green); color: var(--green); background: rgba(45,184,122,0.1); }
+        .copy-icon { font-size: 1rem; }
+
+        .pearltrees-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            background: linear-gradient(135deg, rgba(232,184,75,0.08), rgba(232,184,75,0.03));
+            border: 1px solid rgba(232,184,75,0.3);
+            border-radius: 12px;
+            padding: 1.2rem 1.4rem;
+            margin-top: 1.2rem;
+        }
+        .pearltrees-icon { font-size: 1.8rem; flex-shrink: 0; }
+        .pearltrees-title { font-weight: 700; color: var(--gold); font-size: 0.95rem; margin-bottom: 0.3rem; }
+        .pearltrees-instruction { font-size: 0.88rem; color: var(--muted); line-height: 1.6; margin-bottom: 0.7rem; }
+        .pearltrees-instruction strong { color: var(--text); }
+        .pearltrees-link {
+            display: inline-block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gold);
+            border: 1px solid rgba(232,184,75,0.4);
+            padding: 5px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .pearltrees-link:hover { background: rgba(232,184,75,0.12); }
+
+        /* ── MOBILE ── */
+        @media (max-width: 600px) {
+            .hero { padding: 3rem 1.2rem 2.5rem; }
+            .section { padding: 2rem 1.1rem 4rem; }
+            .poem-wrap { padding: 1.3rem 1.2rem; font-size: 0.98rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progress" style="width:0%"></div>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+
+<!-- HERO -->
+<header class="hero">
+    <p class="hero-eyebrow">Amanda Gorman · 2018 · Terminale AMC</p>
+    <h1>The Impact of<br><em>"Earthrise"</em></h1>
+    <p class="hero-sub">A deep critical analysis of rhetoric, voice, and political urgency in contemporary slam poetry.</p>
+    <div class="badge-row">
+        <span class="badge badge-blue">B2 → C1</span>
+        <span class="badge badge-gold">Rhetoric & Persuasion</span>
+        <span class="badge badge-green">Environmental Justice</span>
+    </div>
+</header>
+
+<!-- NAV -->
+<nav class="nav-tabs" id="navTabs">
+    <div class="nav-tab active" onclick="showSection('s0', this)">① Encounter</div>
+    <div class="nav-tab" onclick="showSection('s1', this)">② Rhetoric</div>
+    <div class="nav-tab" onclick="showSection('s2', this)">③ Close Reading</div>
+    <div class="nav-tab" onclick="showSection('s3', this)">④ Message & Impact</div>
+    <div class="nav-tab" onclick="showSection('s4', this)">⑤ Critical Thinking</div>
+    <div class="nav-tab" onclick="showSection('s5', this)">⑥ Synthesis</div>
+</nav>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 0 · ENCOUNTER -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section active" id="s0">
+    <p class="section-label">Step 01 — Discovery</p>
+    <h2 class="section-title">Encountering the Poem</h2>
+    <p class="section-desc">Before analysing, receive the poem fully: watch, listen, and read. Let the voice do its work first.</p>
+
+    <div class="video-wrapper">
+        <iframe src="https://www.youtube.com/embed/xwOvBv8RLmo?si=SK_gcKXp2p-C-8It" title="Amanda Gorman Earthrise" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+    <div class="context-grid">
+        <div class="ctx-card">
+            <div class="ctx-icon">🛰️</div>
+            <h4>Historical Anchor</h4>
+            <p>On Christmas Eve 1968, astronaut Bill Anders photographed Earth rising above the lunar surface — a first. That image redefined humanity's relationship with its own planet.</p>
+        </div>
+        <div class="ctx-card">
+            <div class="ctx-icon">🎤</div>
+            <h4>The Poet</h4>
+            <p>Amanda Gorman, born 1998 in Los Angeles. Raised by a single mother, she overcame a speech impediment to become the first U.S. Youth Poet Laureate (2017). She performed "Earthrise" at NASA's launch of <em>Committed to the Earth</em>.</p>
+        </div>
+        <div class="ctx-card">
+            <div class="ctx-icon">🌍</div>
+            <h4>The Context</h4>
+            <p>2018: the year the IPCC issued its landmark report giving humanity 12 years to limit catastrophic warming. Youth climate activism was surging, with Greta Thunberg about to take the world stage.</p>
+        </div>
+        <div class="ctx-card">
+            <div class="ctx-icon">🗣️</div>
+            <h4>Spoken Word & Slam</h4>
+            <p>This poem belongs to the spoken word tradition, where rhythm, breath, and body are part of the text. The page version is a <em>score</em> for a live performance — layout directs timing.</p>
+        </div>
+    </div>
+
+    <hr class="divider">
+    <p class="section-label" style="margin-bottom:0.5rem">The full text</p>
+    <div class="poem-wrap">
+        On Christmas Eve, 1968, astronaut Bill Anders<br>
+        Snapped a photo of the earth<br>
+        As Apollo 8 orbited the moon.<br><br>
+        Those three guys<br>Were surprised<br>To see from their eyes<br>
+        Our planet looked like an earthrise<br>
+        A blue orb hovering over the moon's gray horizon,<br>
+        with deep oceans and silver skies.<br><br>
+        It was our world's first glance at itself<br>
+        Our first chance to see a shared reality,<br>
+        A declared stance and a commonality;<br><br>
+        A glimpse into our planet's mirror,<br>
+        And as threats drew nearer,<br>Our own urgency became clearer,<br>
+        As we realize that we hold nothing dearer<br>
+        than this floating body we all call home.<br><br>
+        We've known<br>That we're caught in the throes<br>
+        Of climactic changes some say<br>Will just go away,<br>
+        While some simply pray<br>To survive another day;<br>
+        For it is the obscure, the oppressed, the poor,<br>
+        Who when the disaster<br>Is declared done,<br>
+        Still suffer more than anyone.<br><br>
+        <strong>Climate change is the single greatest challenge of our time,</strong><br><br>
+        Of this, you're certainly aware.<br>
+        It's saddening, but I cannot spare you<br>
+        From knowing an inconvenient fact, because<br>
+        It's getting the facts straight that gets us to act and not to wait.<br><br>
+        So I tell you this not to scare you,<br>
+        But to prepare you, to dare you<br>
+        To dream a different reality,<br><br>
+        Where despite disparities<br>We all care to protect this world,<br>
+        This riddled blue marble, this little true marvel<br>
+        To muster the verve and the nerve<br>
+        To see how we can serve<br>
+        Our planet. You don't need to be a politician<br>
+        To make it your mission to conserve, to protect,<br>
+        To preserve that one and only home<br>
+        That is ours,<br>
+        To use your unique power<br>
+        To give next generations the planet they deserve.<br><br>
+        We are demonstrating, creating, advocating<br><br>
+        We heed this inconvenient truth, because we need to be anything but lenient<br>
+        With the future of our youth.<br><br>
+        And while this is a training,<br>in sustaining the future of our planet,<br>
+        <strong>There is no rehearsal. The time is<br>Now<br>Now<br>Now,</strong><br>
+        Because the reversal of harm,<br>
+        And protection of a future so universal<br>
+        Should be anything but controversial.<br><br>
+        So, earth, pale blue dot<br>We will fail you not.<br><br>
+        Just as we chose to go to the moon<br>We know it's never too soon<br>
+        To choose hope.<br>
+        We choose to do more than cope<br>With climate change<br>We choose to end it—<br>
+        We refuse to lose.<br>
+        Together we do this and more<br>
+        Not because it's very easy or nice<br>
+        But because it is necessary,<br>
+        Because with every dawn we carry<br>
+        the weight of the fate of this celestial body orbiting a star.<br>
+        And as heavy as that weight sounded, it doesn't hold us down,<br>
+        But it keeps us grounded, steady, ready,<br>
+        Because an environmental movement of this size<br>
+        Is simply another form of an earthrise.<br><br>
+        To see it, close your eyes.<br>
+        Visualize that all of us leaders in this room<br>
+        and outside of these walls or in the halls, all<br>
+        of us changemakers are in a spacecraft,<br>
+        Floating like a silver raft<br>in space, and we see the face of our planet anew.<br>
+        We relish the view;<br>
+        We witness its round green and brilliant blue,<br>
+        Which inspires us to ask deeply, wholly:<br>What can we do?<br>
+        Open your eyes.<br>
+        Know that the future of<br>this wise planet<br>
+        Lies right in sight:<br>Right in all of us. Trust<br>this earth uprising.<br>
+        All of us bring light to exciting solutions never tried before<br>
+        For it is our hope that implores us, at our uncompromising core,<br>
+        To keep rising up for an earth more than worth fighting for.
+    </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 1 · RHETORIC MATCHING -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="s1">
+    <p class="section-label">Step 02 — Craft</p>
+    <h2 class="section-title">The Rhetorical Toolkit</h2>
+    <p class="section-desc">Two rounds of matching. First: identify the device. Then: understand what it <em>does</em>.</p>
+
+    <!-- ── ROUND 1 ── -->
+    <div class="round-header">
+        <span class="round-badge">Round 1</span>
+        <p>Match each quotation to its rhetorical device. Drag or tap a device to assign it.</p>
+    </div>
+
+    <div class="match-arena" id="round1">
+        <div class="quotes-col" id="quotesCol">
+            <div class="quote-slot" id="qs0" data-answer="Anaphora">
+                <p class="slot-quote">"We choose to end it — / We refuse to lose."</p>
+                <div class="drop-zone" id="dz0" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz0','qs0')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs1" data-answer="Tricolon">
+                <p class="slot-quote">"Now / Now / Now,"</p>
+                <div class="drop-zone" id="dz1" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz1','qs1')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs2" data-answer="Apostrophe">
+                <p class="slot-quote">"So, earth, pale blue dot / We will fail you not."</p>
+                <div class="drop-zone" id="dz2" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz2','qs2')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs3" data-answer="Allusion">
+                <p class="slot-quote">"pale blue dot"</p>
+                <div class="drop-zone" id="dz3" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz3','qs3')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs4" data-answer="Antithesis">
+                <p class="slot-quote">"not to scare you / But to prepare you, to dare you"</p>
+                <div class="drop-zone" id="dz4" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz4','qs4')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs5" data-answer="Alliteration">
+                <p class="slot-quote">"This riddled blue marble, this little true marvel"</p>
+                <div class="drop-zone" id="dz5" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz5','qs5')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs6" data-answer="Volta">
+                <p class="slot-quote">"Climate change is the single greatest challenge of our time,"</p>
+                <div class="drop-zone" id="dz6" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz6','qs6')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+            <div class="quote-slot" id="qs7" data-answer="Guided Visualisation">
+                <p class="slot-quote">"To see it, close your eyes… Open your eyes."</p>
+                <div class="drop-zone" id="dz7" ondragover="allowDrop(event)" ondrop="dropDevice(event,'dz7','qs7')">
+                    <span class="drop-hint">drop device here</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="devices-bank" id="devicesBank">
+            <div class="device-chip" id="dev-Anaphora" draggable="true" ondragstart="dragDevice(event,'Anaphora')" onclick="tapDevice('Anaphora')">Anaphora</div>
+            <div class="device-chip" id="dev-Tricolon" draggable="true" ondragstart="dragDevice(event,'Tricolon')" onclick="tapDevice('Tricolon')">Tricolon</div>
+            <div class="device-chip" id="dev-Apostrophe" draggable="true" ondragstart="dragDevice(event,'Apostrophe')" onclick="tapDevice('Apostrophe')">Apostrophe</div>
+            <div class="device-chip" id="dev-Allusion" draggable="true" ondragstart="dragDevice(event,'Allusion')" onclick="tapDevice('Allusion')">Allusion</div>
+            <div class="device-chip" id="dev-Antithesis" draggable="true" ondragstart="dragDevice(event,'Antithesis')" onclick="tapDevice('Antithesis')">Antithesis</div>
+            <div class="device-chip" id="dev-Alliteration" draggable="true" ondragstart="dragDevice(event,'Alliteration')" onclick="tapDevice('Alliteration')">Alliteration</div>
+            <div class="device-chip" id="dev-Volta" draggable="true" ondragstart="dragDevice(event,'Volta')" onclick="tapDevice('Volta')">Volta</div>
+            <div class="device-chip" id="dev-Guided Visualisation" draggable="true" ondragstart="dragDevice(event,'Guided Visualisation')" onclick="tapDevice('Guided Visualisation')">Guided Visualisation</div>
+        </div>
+    </div>
+
+    <button class="btn-primary btn-full" onclick="checkRound1()" style="margin-top:1rem">Check Round 1</button>
+    <div class="score-banner" id="r1score"></div>
+
+    <!-- ── ROUND 2 ── -->
+    <div class="round-header" style="margin-top:3rem">
+        <span class="round-badge" style="background:rgba(232,184,75,0.15);color:var(--gold);border-color:var(--gold)">Round 2</span>
+        <p>Now match each quotation to the effect it creates. What does the device <em>do</em> to the audience?</p>
+    </div>
+
+    <div id="round2-items">
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"We choose to end it — / We refuse to lose."</p>
+            <select class="r2-select" data-answer="collective">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"Now / Now / Now,"</p>
+            <select class="r2-select" data-answer="countdown">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"So, earth, pale blue dot / We will fail you not."</p>
+            <select class="r2-select" data-answer="pledge">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"pale blue dot"</p>
+            <select class="r2-select" data-answer="authority">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"not to scare you / But to prepare you, to dare you"</p>
+            <select class="r2-select" data-answer="redirect">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"This riddled blue marble, this little true marvel"</p>
+            <select class="r2-select" data-answer="sonic">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"Climate change is the single greatest challenge of our time,"</p>
+            <select class="r2-select" data-answer="rupture">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+        <div class="r2-item">
+            <p class="slot-quote r2-quote">"To see it, close your eyes… Open your eyes."</p>
+            <select class="r2-select" data-answer="participatory">
+                <option value="">— select the effect —</option>
+                <option value="collective">Creates a drumbeat of collective agency — no passive bystander is possible.</option>
+                <option value="countdown">Mimics a countdown, making lost time physically felt by the audience.</option>
+                <option value="pledge">Transforms the poem into a solemn pledge between humans and the Earth.</option>
+                <option value="authority">Borrows scientific authority from a famous philosophical tradition.</option>
+                <option value="redirect">Redirects fear into courage by cancelling the negative with the positive.</option>
+                <option value="sonic">Creates sonic pleasure that keeps listeners engaged despite urgency.</option>
+                <option value="rupture">Ruptures the lyrical flow, signalling the end of aesthetics and the start of action.</option>
+                <option value="participatory">Makes the audience physically perform the poem, collapsing distance between art and life.</option>
+            </select>
+        </div>
+
+    </div>
+
+    <button class="btn-primary btn-full" onclick="checkRound2()" style="margin-top:1rem">Check Round 2</button>
+    <div class="score-banner" id="r2score"></div>
+
+    <hr class="divider">
+    <div style="background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:1.5rem; margin-top:0.5rem;">
+        <p class="q-label" style="margin-top:0">Going further</p>
+        <p class="q-question">Choose one device. In 2–3 sentences, explain why Gorman uses it at <em>that specific moment</em> in the poem — not just what it is, but why it appears where it does.</p>
+        <textarea placeholder='e.g. "The apostrophe occurs at the poem\'s closing movement, after the call to action, because..."'></textarea>
+    </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 2 · CLOSE READING -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="s2">
+    <p class="section-label">Step 03 — Decoding</p>
+    <h2 class="section-title">Tap & Decode: Close Analysis</h2>
+    <p class="section-desc">Tap a quote to reveal the analytical question. Think first, then check your interpretation.</p>
+
+    <!-- Q1 -->
+    <div class="quote-block" id="qb1">
+        <div class="quote-trigger" onclick="toggleQuote('qb1')">
+            <span class="quote-text">"Our planet looked like an earthrise / A blue orb hovering over the moon's gray horizon"</span>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="quote-panel">
+            <p class="q-label">Opening strategy — Ethos & Pathos</p>
+            <p class="q-question">Why does Gorman choose to anchor a climate poem in a space mission from 1968?</p>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb1')">A) To celebrate human technological achievements and the conquest of space.</button>
+            <button class="choice-btn" onclick="answerQ(this,true,'fb1')">B) To establish a shared origin: that famous image erased borders and forced humanity to see itself as a fragile, unified whole.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb1')">C) To suggest that colonising other planets is the solution to climate change.</button>
+            <div class="feedback-box" id="fb1"><strong>Correct.</strong> The "Earthrise" photograph is the poem's central <em>objective correlative</em>: an image that embodies the emotion Gorman wants to evoke — awe, responsibility, and unity. Starting in 1968 also implies a long history of inaction: we saw the planet's fragility over 50 years ago. What have we done since?</div>
+        </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quote-block" id="qb2">
+        <div class="quote-trigger" onclick="toggleQuote('qb2')">
+            <span class="quote-text">"This riddled blue marble, this little true marvel"</span>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="quote-panel">
+            <p class="q-label">Word choice — Semantic tension</p>
+            <p class="q-question">The word "riddled" (= percé de trous, rongé) disrupts the romantic image of Earth. What is the effect of this semantic shock?</p>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb2')">A) It emphasises the mysteries and "riddles" of the universe, linking to space exploration.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb2')">B) It suggests the Earth is small and insignificant.</button>
+            <button class="choice-btn" onclick="answerQ(this,true,'fb2')">C) It creates a stark juxtaposition: the Earth is both a wonder ("marvel") and a wound — damaged by human impact.</button>
+            <div class="feedback-box" id="fb2"><strong>Exactly.</strong> "Riddled" usually describes something perforated by bullets or disease. The violent connotation <em>invades</em> the romantic metaphor of the "blue marble", forcing the listener to hold beauty and destruction simultaneously. This is the emotional core of the poem: the Earth is worth fighting for <em>because</em> it is already suffering.</div>
+        </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quote-block" id="qb3">
+        <div class="quote-trigger" onclick="toggleQuote('qb3')">
+            <span class="quote-text">"There is no rehearsal. The time is<br>Now<br>Now<br>Now,"</span>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="quote-panel">
+            <p class="q-label">Form as meaning — Enjambment & urgency</p>
+            <p class="q-question">What is the combined visual and auditory effect of this layout?</p>
+            <button class="choice-btn" onclick="answerQ(this,true,'fb3')">A) It forces the reader/listener to pause between each word, mimicking a countdown — each "Now" is a beat of lost time.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb3')">B) It represents the speaker's hesitation and personal uncertainty.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb3')">C) It follows the traditional structure of a sonnet's volta.</button>
+            <div class="feedback-box" id="fb3"><strong>Yes.</strong> Form enacts meaning here. On the page, the vertical stacking creates visual urgency — a countdown, a falling. In performance, it imposes silence between each "Now", making the word heavier each time it lands. The metaphor of "no rehearsal" — borrowed from theatre — is then enacted by the poem itself: there is no second take.</div>
+        </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quote-block" id="qb4">
+        <div class="quote-trigger" onclick="toggleQuote('qb4')">
+            <span class="quote-text">"For it is the obscure, the oppressed, the poor / Who … still suffer more than anyone."</span>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="quote-panel">
+            <p class="q-label">Political dimension — Environmental justice</p>
+            <p class="q-question">Many climate speeches focus on "all of humanity". Why does Gorman instead name specific groups? What does this add to the poem's message?</p>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb4')">A) She is simply listing examples of people who care about the environment.</button>
+            <button class="choice-btn" onclick="answerQ(this,true,'fb4')">B) She challenges the myth that climate change affects everyone equally — making a clear argument for environmental justice and intersectionality.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb4')">C) She is trying to appeal to a specific political party in her audience.</button>
+            <div class="feedback-box" id="fb4"><strong>Exactly right.</strong> This stanza is where Gorman's poem departs from mainstream environmentalism. By naming "the obscure, the oppressed, the poor", she insists that climate change is also a question of <em>power</em>. The wealthy can insulate themselves from disaster; the marginalised cannot. Her poem demands both ecological <em>and</em> social justice — they are inseparable.</div>
+        </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quote-block" id="qb5">
+        <div class="quote-trigger" onclick="toggleQuote('qb5')">
+            <span class="quote-text">"Just as we chose to go to the moon / We know it's never too soon / To choose hope."</span>
+            <span class="toggle-icon">+</span>
+        </div>
+        <div class="quote-panel">
+            <p class="q-label">Historical parallel — Logos & Pathos</p>
+            <p class="q-question">How does the reference to the Moon landing function as a rhetorical argument?</p>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb5')">A) It is a nostalgic tribute to American patriotism and national pride.</button>
+            <button class="choice-btn" onclick="answerQ(this,true,'fb5')">B) It is an implicit syllogism: humanity chose and achieved an "impossible" goal before; therefore choosing to solve climate change is neither naive nor impossible.</button>
+            <button class="choice-btn" onclick="answerQ(this,false,'fb5')">C) It suggests that technology will automatically solve environmental problems.</button>
+            <div class="feedback-box" id="fb5"><strong>Brilliant.</strong> This is a <em>logos</em> argument hidden inside a poetic allusion. The Moon landing counters the most powerful objection to climate action: that the problem is "too big". Gorman turns the poem's opening image (Earth seen from space) into its closing argument: the same ambition that took us <em>away</em> from Earth must now be turned toward <em>saving</em> it.</div>
+        </div>
+    </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 3 · MESSAGE & IMPACT -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="s3">
+    <p class="section-label">Step 04 — Interpretation</p>
+    <h2 class="section-title">Message, Intent & Impact</h2>
+    <p class="section-desc">Every rhetorical choice serves a purpose. Match each quotation to the implicit message Gorman is communicating.</p>
+
+    <div class="match-item">
+        <p class="match-quote">"For it is the obscure, the oppressed, the poor / Who when the disaster is declared done / Still suffer more than anyone."</p>
+        <select id="sel1">
+            <option value="">-- Select the underlying message --</option>
+            <option value="justice">Climate change is a question of social and environmental justice, not only ecology.</option>
+            <option value="denial">Most people are still in denial about the reality of climate change.</option>
+            <option value="hope">Individual action can reverse the damage already done to the planet.</option>
+        </select>
+    </div>
+
+    <div class="match-item">
+        <p class="match-quote">"We're caught in the throes / Of climactic changes some say / Will just go away, / While some simply pray / To survive another day"</p>
+        <select id="sel2">
+            <option value="">-- Select the underlying message --</option>
+            <option value="justice">Climate change is a question of social and environmental justice, not only ecology.</option>
+            <option value="denial">Dangerous passivity and denial are prevalent responses — but they are a luxury only some can afford.</option>
+            <option value="hope">Individual action can reverse the damage already done to the planet.</option>
+        </select>
+    </div>
+
+    <div class="match-item">
+        <p class="match-quote">"We choose to end it— / We refuse to lose. / Together we do this"</p>
+        <select id="sel3">
+            <option value="">-- Select the underlying message --</option>
+            <option value="justice">Climate change is a question of social and environmental justice, not only ecology.</option>
+            <option value="denial">Dangerous passivity and denial are prevalent responses — but they are a luxury only some can afford.</option>
+            <option value="hope">Collective, willed agency — not passive hope — is the only viable response to the crisis.</option>
+        </select>
+    </div>
+
+    <div class="match-item">
+        <p class="match-quote">"You don't need to be a politician / To make it your mission to conserve, to protect"</p>
+        <select id="sel4">
+            <option value="">-- Select the underlying message --</option>
+            <option value="youth">The poem addresses young people directly — empowering them as legitimate agents of change, not future actors.</option>
+            <option value="denial">Dangerous passivity and denial are prevalent responses — but they are a luxury only some can afford.</option>
+            <option value="justice">Climate change is a question of social and environmental justice.</option>
+        </select>
+    </div>
+
+    <button class="btn-primary btn-full" onclick="checkMatches()" style="margin-top:0.5rem">Check my interpretations</button>
+    <div class="score-banner" id="matchScore"></div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 4 · CRITICAL THINKING -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="s4">
+    <p class="section-label">Step 05 — Evaluation</p>
+    <h2 class="section-title">Critical Thinking</h2>
+    <p class="section-desc">Move beyond describing what Gorman does — evaluate how and how effectively she does it.</p>
+
+    <div class="think-card">
+        <h4>① The Volta: Where is the turn?</h4>
+        <p class="think-context">In poetry, the <em>volta</em> marks a pivotal shift in tone, register, or argument. Gorman uses this technique deliberately mid-poem. Identify the exact line where the shift occurs, and explain why she isolates it from the surrounding stanzas.</p>
+        <p class="hint">💡 Tip: Look for the one sentence written in plain prose rather than verse — a single isolated line that reads like a news headline.</p>
+        <textarea placeholder='Quote the line, then explain: what changes in tone, register, and purpose at this moment? Why place it here and not at the beginning or end?'></textarea>
+    </div>
+
+    <div class="think-card">
+        <h4>② Audience & Address</h4>
+        <p class="think-context">Gorman uses "you", "we", and "us" at different moments. Each pronoun creates a different relationship with the listener. Trace the shift between these pronouns through the poem — what effect does each produce?</p>
+        <p class="hint">💡 Tip: When does "I tell you" become "we choose"? What changes when Gorman moves from addressing the audience to including herself among them?</p>
+        <textarea placeholder="Analyse how the use of pronouns constructs Gorman's relationship with her audience and how it changes across the poem."></textarea>
+    </div>
+
+    <div class="think-card">
+        <h4>③ The Limits of Optimism</h4>
+        <p class="think-context">Some critics argue that climate poetry risks becoming complicit in "green optimism" — offering emotional catharsis without demanding structural change. The audience feels moved, applauds, and goes home unchanged.</p>
+        <p class="hint">💡 Key vocabulary: catharsis · mobilisation · performative · systemic · individual vs. structural action</p>
+        <textarea placeholder="Do you think 'Earthrise' successfully avoids this trap? Use specific lines as evidence for your position."></textarea>
+    </div>
+
+    <!-- SPECTRUM ANALYSIS -->
+    <hr class="divider">
+    <p class="section-label">Persuasion Spectrum</p>
+    <p style="color:var(--muted); font-size:0.92rem; margin-bottom:1.5rem;">How strongly does each passage appeal to Logos (reason), Pathos (emotion), or Ethos (authority/credibility)?</p>
+
+    <div class="spectrum-item">
+        <div class="spectrum-header">
+            <h4>Pathos intensity</h4>
+            <div class="spectrum-meter">
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot"></div>
+            </div>
+        </div>
+        <p class="spectrum-quote">"A glimpse into our planet's mirror, / And as threats drew nearer, / Our own urgency became clearer"</p>
+        <p class="spectrum-analysis">The accumulating rhyme (<em>mirror / nearer / clearer</em>) creates a ratchet-effect of <strong>escalating emotion</strong>. The mirror metaphor implies self-recognition — we are not watching a disaster unfold "out there" but seeing ourselves reflected in it.</p>
+    </div>
+
+    <div class="spectrum-item">
+        <div class="spectrum-header">
+            <h4>Logos intensity</h4>
+            <div class="spectrum-meter">
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot"></div>
+                <div class="meter-dot"></div>
+            </div>
+        </div>
+        <p class="spectrum-quote">"It's getting the facts straight that gets us to act and not to wait."</p>
+        <p class="spectrum-analysis">Gorman acknowledges the empirical dimension: <strong>facts, not feelings, drive action</strong>. This single line provides rational scaffolding for the emotional architecture around it — she is not asking for blind faith.</p>
+    </div>
+
+    <div class="spectrum-item">
+        <div class="spectrum-header">
+            <h4>Ethos intensity</h4>
+            <div class="spectrum-meter">
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+                <div class="meter-dot lit"></div>
+            </div>
+        </div>
+        <p class="spectrum-quote">"pale blue dot"</p>
+        <p class="spectrum-analysis">A two-word allusion to Carl Sagan places Gorman in a lineage of scientific and philosophical authority. She is not an activist with an opinion — she is <strong>heir to a tradition of rational humanism</strong> that stretches from Sagan to NASA. Ethos borrowed, not just claimed.</p>
+    </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SECTION 5 · SYNTHESIS -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section class="section" id="s5">
+    <p class="section-label">Step 06 — Production</p>
+    <h2 class="section-title">Synthesis Writing</h2>
+    <p class="section-desc">Now produce your own critical analysis. Choose a question and write a structured paragraph in response.</p>
+
+    <div class="synth-prompt">
+        <h4>Question A — Rhetoric & Conviction</h4>
+        <p>In "Earthrise", Amanda Gorman uses the techniques of spoken word poetry to construct a politically urgent argument. How does the form of the poem contribute to the force of its message?</p>
+        <p style="color:var(--muted);font-size:0.85rem; margin-bottom:0">Incorporate: at least two rhetorical devices · evidence (quotations) · an evaluative judgement on effectiveness.</p>
+    </div>
+
+    <div class="synth-prompt">
+        <h4>Question B — Justice & Voice</h4>
+        <p>To what extent does "Earthrise" go beyond environmental concern to make a broader political statement about inequality and power?</p>
+        <p style="color:var(--muted);font-size:0.85rem; margin-bottom:0">Incorporate: the concept of environmental justice · a nuanced position (not just description) · specific textual evidence.</p>
+    </div>
+
+    <div class="synth-prompt">
+        <h4>Question C — Comparative</h4>
+        <p>Compare the strategies Gorman uses to persuade her audience with those of another text, speech or document you have studied. Are spoken word poems an effective vehicle for political advocacy?</p>
+        <p style="color:var(--muted);font-size:0.85rem; margin-bottom:0">A comparative paragraph at C1 level: similar rhetorical strategies · contrasting effects · your own supported judgement.</p>
+    </div>
+
+    <p class="q-label" style="margin-top:2rem; margin-bottom:0.6rem">Useful connectors & phrases</p>
+    <div class="scaffold-chips" id="chips">
+        <span class="chip" onclick="toggleChip(this)">Gorman strategically deploys…</span>
+        <span class="chip" onclick="toggleChip(this)">The effect of this device is to…</span>
+        <span class="chip" onclick="toggleChip(this)">This suggests / implies / reveals…</span>
+        <span class="chip" onclick="toggleChip(this)">Far from merely… Gorman…</span>
+        <span class="chip" onclick="toggleChip(this)">The juxtaposition of X and Y…</span>
+        <span class="chip" onclick="toggleChip(this)">Crucially, this line also argues…</span>
+        <span class="chip" onclick="toggleChip(this)">One could argue that…, yet…</span>
+        <span class="chip" onclick="toggleChip(this)">The poem's most powerful moment…</span>
+        <span class="chip" onclick="toggleChip(this)">In contrast to / Unlike…</span>
+        <span class="chip" onclick="toggleChip(this)">This ultimately challenges…</span>
+    </div>
+
+    <textarea class="synth-area" id="synthText" oninput="countChars()" placeholder="Write your paragraph here (aim for 150–200 words for B2, 200–250 for C1)…"></textarea>
+    <div class="synth-footer">
+        <p class="char-counter" id="charCount">0 words</p>
+        <button class="copy-btn" id="copyBtn" onclick="copySynthesis()">
+            <span class="copy-icon">⎘</span> Copy my synthesis
+        </button>
+    </div>
+
+    <div class="pearltrees-box">
+        <div class="pearltrees-icon">🌐</div>
+        <div>
+            <p class="pearltrees-title">Share on Pearltrees</p>
+            <p class="pearltrees-instruction">Once copied, paste your synthesis into a <strong>Text pearl</strong> on Pearltrees and share your pearl with me.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<!-- SCRIPTS -->
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<script>
+    // ── Stars ──
+    (function(){
+        const s = document.getElementById('stars');
+        for(let i=0;i<120;i++){
+            const d = document.createElement('div');
+            d.className='star';
+            const sz = Math.random()*2+0.5;
+            d.style.cssText = `
+                width:${sz}px; height:${sz}px;
+                top:${Math.random()*100}%;
+                left:${Math.random()*100}%;
+                --d:${(Math.random()*4+2).toFixed(1)}s;
+                --min:${(Math.random()*0.1).toFixed(2)};
+                --max:${(Math.random()*0.6+0.2).toFixed(2)};
+                animation-delay:${(Math.random()*5).toFixed(1)}s;
+            `;
+            s.appendChild(d);
+        }
+    })();
+
+    // ── Navigation ──
+    function showSection(id, tab){
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById(id).classList.add('active');
+        tab.classList.add('active');
+        updateProgress();
+        window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    // ── Progress ──
+    const sections = ['s0','s1','s2','s3','s4','s5'];
+    function updateProgress(){
+        const active = document.querySelector('.section.active').id;
+        const idx = sections.indexOf(active);
+        const pct = Math.round(((idx+1)/sections.length)*100);
+        document.getElementById('progress').style.width = pct + '%';
+    }
+    updateProgress();
+
+    // ── Quote Accordion ──
+    function toggleQuote(id){
+        const block = document.getElementById(id);
+        const isOpen = block.classList.contains('open');
+        document.querySelectorAll('.quote-block').forEach(b => {
+            b.classList.remove('open');
+            b.querySelector('.quote-panel').style.display = 'none';
+        });
+        if(!isOpen){
+            block.classList.add('open');
+            block.querySelector('.quote-panel').style.display = 'block';
+        }
+    }
+
+    // ── Answer MCQ ──
+    function answerQ(btn, isCorrect, fbId){
+        const container = btn.closest('.quote-panel');
+        container.querySelectorAll('.choice-btn').forEach(b => {
+            b.disabled = true;
+            b.style.pointerEvents = 'none';
+        });
+        const fb = document.getElementById(fbId);
+        fb.style.display = 'block';
+        if(isCorrect){
+            btn.classList.add('correct');
+        } else {
+            btn.classList.add('wrong');
+            container.querySelectorAll('.choice-btn').forEach(b => {
+                if(b.getAttribute('onclick').includes('true')) b.classList.add('correct');
+            });
+        }
+    }
+
+    // ── Matcher ──
+    const matchAnswers = { sel1:'justice', sel2:'denial', sel3:'hope', sel4:'youth' };
+    function checkMatches(){
+        let score = 0;
+        for(const [id, answer] of Object.entries(matchAnswers)){
+            if(document.getElementById(id).value === answer) score++;
+        }
+        const banner = document.getElementById('matchScore');
+        banner.style.display = 'block';
+        if(score === 4){
+            banner.className = 'score-banner score-good';
+            banner.innerHTML = '🌍 All 4 correct — you have grasped the full range of Gorman\'s implicit arguments.';
+        } else if(score >= 2){
+            banner.className = 'score-banner score-mid';
+            banner.innerHTML = `${score}/4 correct — re-read the passages and reconsider what Gorman is <em>implying</em>, not just describing.`;
+        } else {
+            banner.className = 'score-banner score-low';
+            banner.innerHTML = `${score}/4 correct — try again. Focus on what each quote reveals about power, action, and justice.`;
+        }
+    }
+
+    // ── Chips ──
+    function toggleChip(el){ el.classList.toggle('selected'); }
+
+    // ── Round 1: Drag & Drop / Tap matching ──
+    let draggedDevice = null;
+    let selectedTapDevice = null;
+
+    function dragDevice(e, name) {
+        draggedDevice = name;
+        e.dataTransfer.setData('text/plain', name);
+    }
+
+    function allowDrop(e) {
+        e.preventDefault();
+        e.currentTarget.classList.add('dragover');
+    }
+
+    function dropDevice(e, dzId, slotId) {
+        e.preventDefault();
+        e.currentTarget.classList.remove('dragover');
+        const name = e.dataTransfer.getData('text/plain') || draggedDevice;
+        if(name) placeDevice(name, dzId, slotId);
+        draggedDevice = null;
+    }
+
+    // Tap mode for mobile
+    function tapDevice(name) {
+        // If tapping same chip — deselect
+        if(selectedTapDevice === name) {
+            selectedTapDevice = null;
+            document.querySelectorAll('.device-chip').forEach(c => c.classList.remove('selected-tap'));
+            return;
+        }
+        selectedTapDevice = name;
+        document.querySelectorAll('.device-chip').forEach(c => c.classList.remove('selected-tap'));
+        const el = document.getElementById('dev-' + name);
+        if(el) el.classList.add('selected-tap');
+    }
+
+    // Tap on a drop zone to place currently selected device
+    document.addEventListener('click', function(e) {
+        const dz = e.target.closest('.drop-zone');
+        if(dz && selectedTapDevice) {
+            const dzId = dz.id;
+            const slotId = dz.closest('.quote-slot').id;
+            placeDevice(selectedTapDevice, dzId, slotId);
+            document.querySelectorAll('.device-chip').forEach(c => c.classList.remove('selected-tap'));
+            selectedTapDevice = null;
+        }
+    });
+
+    function placeDevice(name, dzId, slotId) {
+        const dz = document.getElementById(dzId);
+        if(!dz) return;
+        // If zone already has a chip, return old device to bank
+        const existing = dz.querySelector('.placed-chip');
+        if(existing) {
+            const oldName = existing.dataset.device;
+            returnDevice(oldName);
+        }
+        // Place chip
+        dz.innerHTML = `<span class="placed-chip" data-device="${name}" onclick="removeDevice('${name}','${dzId}')">${name} <span class="remove-x">✕</span></span>`;
+        // Mark bank chip as used
+        const bankChip = document.getElementById('dev-' + name);
+        if(bankChip) bankChip.classList.add('used');
+    }
+
+    function removeDevice(name, dzId) {
+        const dz = document.getElementById(dzId);
+        if(dz) dz.innerHTML = '<span class="drop-hint">drop device here</span>';
+        returnDevice(name);
+    }
+
+    function returnDevice(name) {
+        const bankChip = document.getElementById('dev-' + name);
+        if(bankChip) bankChip.classList.remove('used');
+    }
+
+    // dragover highlighting cleanup
+    document.addEventListener('dragover', function(e) {
+        document.querySelectorAll('.drop-zone').forEach(z => {
+            if(z !== e.target.closest('.drop-zone')) z.classList.remove('dragover');
+        });
+    });
+
+    function checkRound1() {
+        let score = 0;
+        const slots = document.querySelectorAll('.quote-slot');
+        slots.forEach(slot => {
+            const answer = slot.dataset.answer;
+            const dz = slot.querySelector('.drop-zone');
+            const chip = dz ? dz.querySelector('.placed-chip') : null;
+            const placed = chip ? chip.dataset.device : null;
+            slot.classList.remove('correct-slot','wrong-slot');
+            if(placed === answer) { slot.classList.add('correct-slot'); score++; }
+            else { slot.classList.add('wrong-slot'); }
+        });
+        const banner = document.getElementById('r1score');
+        banner.style.display = 'block';
+        if(score === 8) {
+            banner.className = 'score-banner score-good';
+            banner.innerHTML = '🎯 8/8 — Perfect! You can name every device. Now tackle Round 2 to understand their effects.';
+        } else if(score >= 5) {
+            banner.className = 'score-banner score-mid';
+            banner.innerHTML = `${score}/8 — Good effort. Red borders show mistakes. Try swapping those devices.`;
+        } else {
+            banner.className = 'score-banner score-low';
+            banner.innerHTML = `${score}/8 — Review the device definitions, then retry. Red borders mark the wrong slots.`;
+        }
+    }
+
+    function checkRound2() {
+        let score = 0;
+        const items = document.querySelectorAll('.r2-item');
+        items.forEach(item => {
+            const sel = item.querySelector('.r2-select');
+            item.classList.remove('r2-correct','r2-wrong');
+            if(sel.value === sel.dataset.answer) { item.classList.add('r2-correct'); score++; }
+            else { item.classList.add('r2-wrong'); }
+        });
+        const banner = document.getElementById('r2score');
+        banner.style.display = 'block';
+        if(score === 8) {
+            banner.className = 'score-banner score-good';
+            banner.innerHTML = '🌍 8/8 — Excellent. You understand both <em>what</em> each device is and <em>what it does</em> to the audience.';
+        } else if(score >= 5) {
+            banner.className = 'score-banner score-mid';
+            banner.innerHTML = `${score}/8 — Nearly there. Re-read the red-bordered lines and reconsider the effect on the listener.`;
+        } else {
+            banner.className = 'score-banner score-low';
+            banner.innerHTML = `${score}/8 — Focus on the <em>audience impact</em>, not just the technique. Try again.`;
+        }
+    }
+
+    // ── Copy synthesis ──
+    function copySynthesis() {
+        const text = document.getElementById('synthText').value.trim();
+        const btn = document.getElementById('copyBtn');
+        if(!text) {
+            btn.textContent = '✗ Nothing to copy yet';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerHTML = '<span class="copy-icon">⎘</span> Copy my synthesis'; btn.classList.remove('copied'); }, 2000);
+            return;
+        }
+        navigator.clipboard.writeText(text).then(() => {
+            btn.innerHTML = '✓ Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerHTML = '<span class="copy-icon">⎘</span> Copy my synthesis'; btn.classList.remove('copied'); }, 2500);
+        }).catch(() => {
+            // Fallback for older browsers
+            const ta = document.getElementById('synthText');
+            ta.select();
+            document.execCommand('copy');
+            btn.innerHTML = '✓ Copied!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.innerHTML = '<span class="copy-icon">⎘</span> Copy my synthesis'; btn.classList.remove('copied'); }, 2500);
+        });
+    }
+
+    // ── Word counter ──
+    function countChars(){
+        const text = document.getElementById('synthText').value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        const el = document.getElementById('charCount');
+        el.textContent = words + (words === 1 ? ' word' : ' words');
+        if(words >= 200) el.style.color = 'var(--green)';
+        else if(words >= 150) el.style.color = 'var(--gold)';
+        else el.style.color = 'var(--muted)';
+    }
+</script>
+</body>
+</html>
